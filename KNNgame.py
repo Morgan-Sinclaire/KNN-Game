@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 def dist(a,b):
     return ((a[0]-b[0])**2 + (a[1]-b[1])**2)**.5
@@ -47,6 +48,15 @@ class Grid(object):
         else:
             return "Blue wins with {}%".format(100 - pct)
 
+    def graph(self):
+        if self.reds:
+            plt.scatter(*zip(*self.reds), c='r')
+        if self.blues:
+            plt.scatter(*zip(*self.blues), c='b')
+        plt.xlim(0,10)
+        plt.ylim(0,10)
+        plt.show()
+
 
 def game(n=100, size=10, k=1):
     ply = int(input("Enter number of ply:\n"))
@@ -54,13 +64,17 @@ def game(n=100, size=10, k=1):
     g = Grid(size=size, k=k)
 
     for i in range(ply//2):
+        g.graph()
         p = input("Red, place your point as x, y:\n")
         p = tuple(map(float, p.replace(",", " ").split()))
         g.reds.append(p)
 
+        g.graph()
         p = input("Blue, place your point as x, y:\n")
         p = tuple(map(float, p.replace(",", " ").split()))
         g.blues.append(p)
+
+    g.graph()
 
     return g.score(k, n)
 
